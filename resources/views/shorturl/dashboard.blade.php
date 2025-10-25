@@ -26,7 +26,7 @@
         </tbody>
     </table>
     <div class="d-flex justify-content-center mt-3">
-        {{ $urls->links() }}
+        {{ $urls->links('vendor.pagination.pagination') }}
     </div>
 </div>
 @endsection
