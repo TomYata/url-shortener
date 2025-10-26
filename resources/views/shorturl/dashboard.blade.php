@@ -10,7 +10,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>URL originale</th>
+                <th class="d-none d-sm-table-cell">URL originale</th>
                 <th>URL courte</th>
                 <th>Utilisations</th>
                 <th>Actions</th>
@@ -19,7 +19,7 @@
         <tbody>
             @foreach($urls as $url)
                 <tr>
-                    <td>{{ $url->original_url }}</td>
+                    <td class="d-none d-sm-table-cell">{{ $url->original_url }}</td>
                     <td><a href="{{ url('/' . $url->short_url) }}" target="_blank">{{ url('/' . $url->short_url) }}</a></td>
                     <td>{{ $url->usage_count }}</td>
                     <td class="text-center">
