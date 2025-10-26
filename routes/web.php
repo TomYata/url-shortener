@@ -21,6 +21,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::get('/shorturl/create', [ShortUrlController::class, 'create'])->name('shorturl.create')->middleware('auth');
 // Soumission du formulaire
 Route::post('/shorturl/store', [ShortUrlController::class, 'store'])->name('shorturl.store')->middleware('auth');
+// Edition d'une URL courte
+Route::get('/shorturl/{id}/edit', [ShortUrlController::class, 'edit'])->name('shorturl.edit')->middleware('auth');
+Route::put('/shorturl/{id}', [ShortUrlController::class, 'update'])->name('shorturl.update')->middleware('auth');
+// Suppression d'une URL courte
+Route::delete('/shorturl/{id}', [ShortUrlController::class, 'destroy'])->name('shorturl.destroy')->middleware('auth');
+
 // Tableau de bord utilisateur
 Route::get('/dashboard', [ShortUrlController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 

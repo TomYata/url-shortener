@@ -11,6 +11,7 @@ class ShortUrl extends Model
         'original_url',
         'short_url',
         'usage_count',
+        'is_active',
     ];
 
     public function user()

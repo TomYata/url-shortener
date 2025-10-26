@@ -36,15 +36,49 @@ class ShortUrlController extends Controller
     // Redirige vers l'URL originale et incrémente le compteur
     public function redirect($short)
     {
-        $shortUrl = ShortUrl::where('short_url', $short)->firstOrFail();
-        $shortUrl->increment('usage_count');
-        return redirect($shortUrl->original_url);
+           $shortUrl = ShortUrl::where('short_url', $short)->firstOrFail();
+           if (!$shortUrl->is_active) {
+              return view('shorturl.inactive');
+           }
+           $shortUrl->increment('usage_count');
+           return redirect($shortUrl->original_url);
     }
 
     // Affiche le tableau de bord de l'utilisateur
     public function dashboard()
     {
-        $urls = ShortUrl::where('user_id', Auth::id())->orderByDesc('id')->paginate(10);
+        $urls = ShortUrl::where('user_id', Auth::id())
+            ->where('is_active', true)
+            ->orderByDesc('id')
+            ->paginate(10);
         return view('shorturl.dashboard', compact('urls'));
+    }
+
+    // Affiche le formulaire d'édition d'une URL courte
+    public function edit($id)
+    {
+        $url = ShortUrl::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        return view('shorturl.edit', compact('url'));
+    }
+
+    // Met à jour l'URL courte
+    public function update(Request $request, $id)
+    {
+        $url = ShortUrl::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $request->validate([
+            'original_url' => 'required|url',
+        ]);
+        $url->original_url = $request->original_url;
+        $url->save();
+        return redirect()->route('dashboard')->with('success', 'URL modifiée avec succès !');
+    }
+
+    // Supprime l'URL courte
+    public function destroy($id)
+    {
+           $url = ShortUrl::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+           $url->is_active = false;
+           $url->save();
+           return redirect()->route('dashboard')->with('success', 'URL désactivée avec succès !');
     }
 }

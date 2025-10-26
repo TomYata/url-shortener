@@ -13,6 +13,7 @@
                 <th>URL originale</th>
                 <th>URL courte</th>
                 <th>Utilisations</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -21,6 +22,14 @@
                     <td>{{ $url->original_url }}</td>
                     <td><a href="{{ url('/' . $url->short_url) }}" target="_blank">{{ url('/' . $url->short_url) }}</a></td>
                     <td>{{ $url->usage_count }}</td>
+                    <td class="text-center">
+                        <a href="{{ route('shorturl.edit', $url->id) }}" class="btn btn-primary btn-sm me-2">Éditer</a>
+                        <form action="{{ route('shorturl.destroy', $url->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Supprimer cette URL ?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
