@@ -45,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relation : URLs courtes de l'utilisateur
+     */
+    public function shortUrls()
+    {
+        return $this->hasMany(ShortUrl::class);
+    }
 }
