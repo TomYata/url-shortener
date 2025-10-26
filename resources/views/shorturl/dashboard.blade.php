@@ -23,8 +23,9 @@
                     <td><a href="{{ url('/' . $url->short_url) }}" target="_blank">{{ url('/' . $url->short_url) }}</a></td>
                     <td>{{ $url->usage_count }}</td>
                     <td class="text-center">
+                        <button type="button" class="btn btn-secondary btn-sm me-2 btn-copy" data-url="{{ url('/' . $url->short_url) }}">Copier</button>
                         <a href="{{ route('shorturl.edit', $url->id) }}" class="btn btn-primary btn-sm me-2">Éditer</a>
-                        <form action="{{ route('shorturl.destroy', $url->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Supprimer cette URL ?');">
+                        <form action="{{ route('shorturl.destroy', $url->id) }}" method="POST" style="display:inline;" class="form-delete-url">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
