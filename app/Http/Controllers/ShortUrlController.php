@@ -18,7 +18,7 @@ class ShortUrlController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'original_url' => 'required|url',
+            'original_url' => 'required|url|max:255',
         ]);
 
         $short = substr(md5($request->original_url . time()), 0, 6);
