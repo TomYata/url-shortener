@@ -57,14 +57,16 @@ class ShortUrlController extends Controller
     // Affiche le formulaire d'édition d'une URL courte
     public function edit($id)
     {
-        $url = ShortUrl::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $url = ShortUrl::findOrFail($id);
+        $this->authorize('update', $url);
         return view('shorturl.edit', compact('url'));
     }
 
     // Met à jour l'URL courte
     public function update(Request $request, $id)
     {
-        $url = ShortUrl::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $url = ShortUrl::findOrFail($id);
+        $this->authorize('update', $url);
         $request->validate([
             'original_url' => 'required|url',
         ]);
@@ -76,9 +78,10 @@ class ShortUrlController extends Controller
     // Supprime l'URL courte
     public function destroy($id)
     {
-           $url = ShortUrl::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-           $url->is_active = false;
-           $url->save();
-           return redirect()->route('dashboard')->with('success', 'URL désactivée avec succès !');
+        $url = ShortUrl::findOrFail($id);
+        $this->authorize('delete', $url);
+        $url->is_active = false;
+        $url->save();
+        return redirect()->route('dashboard')->with('success', 'URL désactivée avec succès !');
     }
 }
