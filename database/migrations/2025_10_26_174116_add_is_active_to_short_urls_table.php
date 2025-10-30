@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('short_urls', function (Blueprint $table) {
-            $table->boolean('is_active')->default(true)->after('url');
+            $table->boolean('is_active')->default(true)->after('short_url');
         });
     }
 
