@@ -21,14 +21,18 @@ class ShortUrlController extends Controller
             'original_url' => 'required|url|max:255',
         ]);
 
-        $short = substr(md5($request->original_url . time()), 0, 6);
+        $short = $this->generateShortUrl($request->original_url);
 
-        $shortUrl = ShortUrl::create([
+        try {
+            ShortUrl::create([
             'original_url' => $request->original_url,
             'short_url' => $short,
             'user_id' => Auth::id(),
             'usage_count' => 0,
-        ]);
+            ]);
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Erreur lors de l\'enregistrement de l\'URL courte.']);
+        }
 
         return redirect()->route('dashboard')->with('success', 'URL raccourcie créée !');
     }

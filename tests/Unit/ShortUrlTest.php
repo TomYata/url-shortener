@@ -6,9 +6,9 @@ use App\Models\User;
 describe('ShortUrl', function () {
     it('génère un short code unique à chaque appel', function () {
         $url = new ShortUrl(['original_url' => 'https://laravel.com']);
-        $code1 = substr(md5($url->original_url . time()), 0, 6);
+        $code1 = $url->generateShortUrl($url->original_url);
         sleep(1); // Pour garantir un timestamp différent
-        $code2 = substr(md5($url->original_url . time()), 0, 6);
+        $code2 = $url->generateShortUrl($url->original_url);
         expect($code1)->not->toBe($code2);
     });
 
